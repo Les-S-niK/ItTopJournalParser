@@ -1,0 +1,3 @@
+python_dotenv
+fake_useragent
+requests
