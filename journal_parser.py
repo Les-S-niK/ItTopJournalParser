@@ -1,6 +1,4 @@
 
-## Built-in modules: ##
-
 ## Pip modules: ##
 from requests import Session, Response
 from requests.exceptions import RequestException
@@ -8,9 +6,10 @@ from requests.exceptions import RequestException
 ## Local modules: ##
 from journal_headers import get_login_headers, get_headers_for_requests
 from journal_request_data import JournalUrlsConfig
+from journal_request_logger import request_logger
 
 
-class JournalPasrser(object):
+class JournalParser(object):
     """ItTopJournal parser. It parses the data from the ItTopJournal API.
 
     Args:
@@ -67,6 +66,9 @@ class JournalPasrser(object):
         
         Args:
             response (Response): response object. You can get it after request to api.
+        
+        Raises: 
+            RequestException: if response.status_code is not in range 200-299.
         """
         if not response.ok:
             raise RequestException(f"Failed to login in the JournalApi. Status code: {response.status_code}")
@@ -74,6 +76,7 @@ class JournalPasrser(object):
         return None
 
 
+    @request_logger
     def _get_request_to_journal(
         self,
         url: str,
@@ -99,6 +102,7 @@ class JournalPasrser(object):
         return response.json()
 
 
+    @request_logger
     def _login_in_journal_api(
         self,
         session: Session,

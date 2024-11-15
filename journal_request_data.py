@@ -12,22 +12,27 @@ USER_NAME = YOUR_USERNAME
 
 ## Built-in modules: ## 
 from os import getenv
-from os import path
+from os.path import dirname
 from os import PathLike
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Generator
 
 ## Pip modules: ##
 from dotenv import load_dotenv
 
 
-ENV_FILE_PATH: PathLike = f"{path.dirname(__file__)}/.env"
+dir_path: PathLike = dirname(__file__)
+env_file_path: PathLike = f"{dir_path}/.env"
 ## Load all environment variables from .env file: ##
-load_dotenv(dotenv_path=ENV_FILE_PATH)
+load_dotenv(dotenv_path=env_file_path)
 
 ## Get the date with this format: year-month-day ##
-TODAY_DATE: datetime = datetime.now().strftime('%Y-%m-%d')
+today_date: datetime = datetime.now()
+## Add one day to today_date 'cause we need to get data for tomorrow day: ##
+parser_date: datetime = (today_date + timedelta(days=1))
+parser_str_date: str = parser_date.strftime('%Y-%m-%d')
+
 ## Keys for urls: ##
 SHEDULE_KEY: str = "shedule"
 LEADERBOARD_KEY: str = "leaderboard"
@@ -42,7 +47,7 @@ class JournalUrlsConfig(object):
     """
     ## First value in dict - url, second - variable name in JournalParser class.
     LOGIN_URL: str = ("https://msapi.top-academy.ru/api/v2/auth/login", "login")
-    SHEDULE_URL: str = (f"https://msapi.top-academy.ru/api/v2/schedule/operations/get-month?date_filter={TODAY_DATE}", SHEDULE_KEY)
+    SHEDULE_URL: str = (f"https://msapi.top-academy.ru/api/v2/schedule/operations/get-month?date_filter={parser_str_date}", SHEDULE_KEY)
     GROUP_LEADERBOAR_URL: str = ("https://msapi.top-academy.ru/api/v2/dashboard/progress/leader-group", LEADERBOARD_KEY)
 
 

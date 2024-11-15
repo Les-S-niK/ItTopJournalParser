@@ -3,6 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+## Venv 
+venv/
+.env
+gittoken.txt
+.gitignore
+
 # C extensions
 *.so
 

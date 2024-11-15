@@ -2,6 +2,9 @@
 ## Pip modules: ##
 from fake_useragent import UserAgent
 
+## Local modules: ##
+from journal_request_data import parser_str_date
+
 
 def get_random_useragent() -> str:
     """Get the random useragent from fake_useragent library.
@@ -28,24 +31,19 @@ def get_login_headers() -> dict:
         "accept-encoding": "gzip, deflate, br, zstd",
         "accept-language": "ru_RU, ru",
         "authorization": "Bearer null",
-        "content-length": "147",
         "content-type": "application/json",
         "origin": "https://journal.top-academy.ru",
         "priority": "u=1, i",
         "referer": "https://journal.top-academy.ru/",
-        "sec-ch-ua": '"Chromium";v="130", "Microsoft Edge";v="130", "Not?A_Brand";v="99"',
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"Windows"',
-        "sec-fetch-dest": "empty",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-site": "same-site",
         "user-agent": user_agent
     }
     
     return login_headers
 
 
-def get_headers_for_requests(token: str) -> dict:
+def get_headers_for_requests(
+    token: str,
+) -> dict:
     """Get the headers for any GET request to Journal API.
     Token needs to pass it in auth field.
 
@@ -55,11 +53,12 @@ def get_headers_for_requests(token: str) -> dict:
     Returns:
         dict: Headers dictionary.
     """
+
     user_agent: str = get_random_useragent()
     headers: dict = {
         "authority": "msapi.top-academy.ru",
         "method": "GET",
-        "path": "/api/v2/schedule/operations/get-month?date_filter=2024-11-07",
+        "path": f"/api/v2/schedule/operations/get-month?date_filter={parser_str_date}",
         "scheme": "https",
         "accept": "application/json, text/plain, */*",
         "accept-encoding": "gzip, deflate, br, zstd",
@@ -68,12 +67,6 @@ def get_headers_for_requests(token: str) -> dict:
         "origin": "https://journal.top-academy.ru",
         "priority": "u=1, i",
         "referer": "https://journal.top-academy.ru/",
-        "sec-ch-ua": '"Chromium";v="130", "Microsoft Edge";v="130", "Not?A_Brand";v="99"',
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"Windows"',
-        "sec-fetch-dest": "empty",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-site": "same-site",
         "user-agent": f"{user_agent}"
     }
     
