@@ -3,6 +3,9 @@
 from textwrap import fill
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Optional
+from os import PathLike
+from os.path import join
 
 ## Pip modules: ##
 from PIL import Image, ImageDraw, ImageFont
@@ -10,8 +13,8 @@ from PIL.ImageFont import FreeTypeFont
 from PIL.ImageDraw import ImageDraw as ImgDraw
 
 ## Local modules: ##
-from journal_request_data import dir_path, parser_date
-from journal_response_data import JournalLesson
+from config.journal_request_data import dir_path, parser_date
+from config.journal_response_data import JournalLesson
 
 
 @dataclass
@@ -73,15 +76,21 @@ class SheduleImage(object):
         )
         self.drawed_image: ImgDraw = ImageDraw.Draw(self.image)
         self._create_table_with_shedule()
-        
-        return None
 
+    def save_shedule_to_png(
+        self,
+        filename: str,
+        file_path: Optional[PathLike] = dir_path,
+        file_ext: Optional[str] = ".png"
+    ) -> None:
+        """Saving the shedule table in <file_path> dir with filename <filename> and file ext <file_ext>.
 
-    def save_shedule_to_png(self) -> None:
-        """Save the shedule image to png file.
+        Args:
+            filename (str): Name, that will be used to save the file.
+            save_path (Optional[PathLike], optional): Path to directory, where file will be saved. Defaults to dir_path. (Current directory path)
+            file_ext (Optional[str], optional): File extension <.ext>. Defaults to ".png".
         """
-        self.image.save(f'{dir_path}/shedule_table.png')
-
+        self.image.save(join(file_path, filename + file_ext))
 
     def _create_table_with_shedule(self) -> None:
         """
@@ -159,9 +168,6 @@ class SheduleImage(object):
                     
                     placed_lessons[lesson_number] = True
 
-        return None
-
-
     def __delete_old_dates(self) -> None:
         """Delete old lesson dates from the shedule.
         """
@@ -173,5 +179,3 @@ class SheduleImage(object):
                 day=int(date[2])
             ): 
                 del self.shedule[day_date]
-        
-        return None

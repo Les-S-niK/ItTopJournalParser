@@ -4,8 +4,8 @@ from requests import Session, Response
 from requests.exceptions import RequestException
 
 ## Local modules: ##
-from journal_headers import get_login_headers, get_headers_for_requests
-from journal_request_data import JournalUrlsConfig
+from config.journal_headers import get_login_headers, get_headers_for_requests
+from config.journal_request_data import JournalUrlsConfig
 from journal_request_logger import request_logger
 
 

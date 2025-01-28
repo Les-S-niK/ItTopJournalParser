@@ -9,7 +9,7 @@ from os import PathLike
 from loguru import logger
 
 ## Local modules: ##
-from journal_request_data import dir_path
+from config.journal_request_data import dir_path
 
 
 LOGGER_PATH: PathLike = f"{dir_path}/LOGS.log"

@@ -3,7 +3,7 @@
 from fake_useragent import UserAgent
 
 ## Local modules: ##
-from journal_request_data import parser_str_date
+from config.journal_request_data import parser_str_date
 
 
 def get_random_useragent() -> str:
