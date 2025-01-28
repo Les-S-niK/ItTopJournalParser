@@ -21,7 +21,7 @@ from typing import Generator
 from dotenv import load_dotenv
 
 
-dir_path: PathLike = dirname(__file__)
+dir_path: PathLike = dirname(dirname(__file__))
 env_file_path: PathLike = f"{dir_path}/.env"
 ## Load all environment variables from .env file: ##
 load_dotenv(dotenv_path=env_file_path)
