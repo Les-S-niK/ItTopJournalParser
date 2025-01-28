@@ -11,12 +11,13 @@ APPLICATION_KEY: str = getenv("APPLICATION_KEY")
 ID_CITY: str = getenv("ID_CITY")
 PASSWORD: str = getenv("PASSWORD")
 USERNAME: str = getenv("USER_NAME")
+FILENAME: str = "shedule_image"
 
 LOGIN_USER_DATA: dict = create_json_for_request(
     application_key=APPLICATION_KEY,
     id_city=ID_CITY,
     password=PASSWORD,
-    user_name=USERNAME,
+    username=USERNAME,
 )
 
 parser: JournalParser = JournalParser(
@@ -27,4 +28,6 @@ shedule: dict = parser.shedule
 sorted_shedule: dict = get_sorted_shedule(shedule=shedule)
 
 shedule_image: SheduleImage = SheduleImage(shedule=sorted_shedule)
-shedule_image.save_shedule_to_png()
+shedule_image.save_shedule_to_png(
+    filename=FILENAME
+)
