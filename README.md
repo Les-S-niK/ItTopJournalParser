@@ -24,7 +24,7 @@ LOGIN_USER_DATA: dict = create_json_for_request(
     application_key=APPLICATION_KEY,
     id_city=ID_CITY,
     password=PASSWORD,
-    user_name=USERNAME,
+    username=USERNAME,
 )
 
 parser: JournalParser = JournalParser(
