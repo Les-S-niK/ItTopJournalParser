@@ -87,7 +87,7 @@ class SheduleImage(object):
 
         Args:
             filename (str): Name, that will be used to save the file.
-            save_path (Optional[PathLike], optional): Path to directory, where file will be saved. Defaults to dir_path. (Current directory path)
+            file_path (Optional[PathLike], optional): Path to directory, where file will be saved. Defaults to dir_path. (Current directory path)
             file_ext (Optional[str], optional): File extension <.ext>. Defaults to ".png".
         """
         self.image.save(join(file_path, filename + file_ext))
