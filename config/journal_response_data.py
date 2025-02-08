@@ -2,33 +2,6 @@
 ## Built-in modules: ##
 from dataclasses import dataclass
 
-
-def get_sorted_shedule(shedule: dict) -> list[dict]:
-    """Get the shedule from the JournalParser and sort it.
-
-    Args: 
-        shedule (dict): Unsorted shedule from Journal API.
-
-    Returns:
-        list[dict]: sorted dictionary woth shedule data.
-    """
-    ## The date key in the dict. ##
-    DATE_KEY: str = "date"
-    shedule.sort(key=lambda day_data: day_data.get(DATE_KEY))
-    
-    sorted_shedule: dict[str, list[dict]] = {}
-    
-    for day_data in shedule:
-        ## Sorting the shedule dict by date. ##
-        date_value: str = day_data.get(DATE_KEY)
-        if date_value not in sorted_shedule:
-            sorted_shedule[date_value] = [day_data]
-        else:
-            sorted_shedule[date_value].append(day_data)
-
-    return sorted_shedule
-
-
 @dataclass
 class JournalLesson(object):
     """Class with lesson room_name, date, end etc.
