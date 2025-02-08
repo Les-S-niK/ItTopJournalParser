@@ -75,7 +75,28 @@ class JournalParser(object):
 
         return None
 
-
+    def get_sorted_shedule(self) -> list[dict]:
+        """Get the shedule from the JournalParser and sort it.
+    
+        Returns:
+            list[dict]: sorted dictionary woth shedule data.
+        """
+        ## The date key in the dict. ##
+        DATE_KEY: str = "date"
+        self.shedule.sort(key=lambda day_data: day_data.get(DATE_KEY))
+        
+        sorted_shedule: dict[str, list[dict]] = {}
+        
+        for day_data in self.shedule:
+            ## Sorting the shedule dict by date. ##
+            date_value: str = day_data.get(DATE_KEY)
+            if date_value not in sorted_shedule:
+                sorted_shedule[date_value] = [day_data]
+            else:
+                sorted_shedule[date_value].append(day_data)
+    
+        return sorted_shedule
+    
     @request_logger
     def _get_request_to_journal(
         self,
