@@ -11,7 +11,6 @@ Usage example:
 from journal_parser import JournalParser
 from config.journal_request_data import create_json_for_request
 from shedule_table_image.journal_shedule_table import SheduleImage
-from config.journal_response_data import get_sorted_shedule
 
 
 ## You can insert your own data right here, but using the .env can help secure your data. 
@@ -31,9 +30,7 @@ parser: JournalParser = JournalParser(
     login_json_data=LOGIN_USER_DATA
 )
 
-## Get shedule and sort it.
-shedule: dict = parser.shedule
-sorted_shedule: dict = get_sorted_shedule(shedule=shedule)
+sorted_shedule: dict = parser.get_sorted_shedule()
 ## Create shedule table image. 
 shedule_image: SheduleImage = SheduleImage(shedule=sorted_shedule)
 shedule_image.save_shedule_to_png()
