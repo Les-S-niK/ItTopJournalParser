@@ -9,7 +9,7 @@ from os import PathLike
 from loguru import logger
 
 ## Local modules: ##
-from config.journal_request_data import dir_path
+from config import dir_path
 
 
 LOGGER_PATH: PathLike = f"{dir_path}/LOGS.log"
@@ -42,18 +42,18 @@ def request_logger(function: Callable) -> Callable:
             dict: response.json object.
         """
         start_time: float = time()
-        logger.debug(f">>> Running request {function.__name__}...")
+        logger.debug(f"\n>>> Running request {function.__name__}... <<<")
         try:
             json_response: dict = function(*args, **kwargs)
             end_time: float = time() - start_time
-            logger.debug(f""">>> Succesful response from {function.__name__}. 
-                Took time: {round(end_time, 2)} sec.
+            logger.debug(f"""\n>>> Succesful response from {function.__name__}. 
+                Took time: {round(end_time, 2)} sec. <<<
                 """)
             
             return json_response
         
         except Exception as error:
-            logger.critical(f">>> An error was occured in {function.__name__} request. \n Error: {error}.")
+            logger.critical(f">>>\n An error was occured in {function.__name__} request. \n Error: {error}. <<<")
             raise Exception(error)
     
     return wrapper

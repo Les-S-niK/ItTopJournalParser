@@ -1,14 +1,3 @@
-"""This code uses options from the .env file.
-To make this code work, you need to authorize in the Journal API by visiting the URL https://journal.top-academy.ru/ru/auth/login/index
-and obtain your JSON information from the network manager (press Ctrl + Shift + I -> Network). After logging in, 
-you will see the "login" Fetch/XHR action. 
-Then, you need to copy this information to the .env file in the same directory as this script.
-It should look like this:
-APPLICATION_KEY = YOUR_APP_KEY
-ID_CITY = YOUR_ID_CITY (sometimes it can be null).
-PASSWORD = YOUR_PASSWORD
-USER_NAME = YOUR_USERNAME
-"""
 
 ## Built-in modules: ## 
 from os.path import dirname
@@ -33,7 +22,7 @@ next_day: datetime = today_date + timedelta(days=1)
 
 if not next_day.weekday() == 0:
     parser_date: datetime = today_date - timedelta(days=next_day.weekday())
-print(parser_date)
+
 
 parser_str_date: str = parser_date.strftime('%Y-%m-%d')
 

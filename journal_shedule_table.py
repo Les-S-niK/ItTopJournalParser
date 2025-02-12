@@ -13,8 +13,8 @@ from PIL.ImageFont import FreeTypeFont
 from PIL.ImageDraw import ImageDraw as ImgDraw
 
 ## Local modules: ##
-from config.journal_request_data import dir_path, parser_date
-from config.journal_response_data import JournalLesson
+from config import dir_path, parser_date
+from journal_objects import JournalLesson
 
 
 @dataclass
@@ -121,7 +121,8 @@ class SheduleImage(object):
             self.drawed_image.text(
                 (
                     x + (self.image_prefs.CELL_WIDTH - bbox[2] + bbox[0]) / 2,
-                    y + (self.image_prefs.HEADER_HEIGHT - (bbox[3] - bbox[1])) / 2),
+                    y + (self.image_prefs.HEADER_HEIGHT - (bbox[3] - bbox[1])) / 2
+                ),
                 day,
                 fill=self.image_prefs.TEXT_COLOR,
                 font=self.image_prefs.HEADER_FONT

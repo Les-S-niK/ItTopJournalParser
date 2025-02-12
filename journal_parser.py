@@ -4,9 +4,10 @@ from requests import Session, Response
 from requests.exceptions import RequestException
 
 ## Local modules: ##
-from config.journal_headers import get_login_headers, get_headers_for_requests
-from config.journal_request_data import JournalUrlsConfig
+from journal_parser_headers import get_login_headers, get_headers_for_requests
+from config import JournalUrlsConfig
 from journal_request_logger import request_logger
+from journal_objects import JournalShedule, JournalLeaderboard
 
 
 class JournalParser(object):
@@ -17,7 +18,7 @@ class JournalParser(object):
     """
     def __init__(
         self,
-        login_json_data: dict
+        login_json_data: dict,
     ) -> None:
         """Journal Parser initialization for parsing the data from the ItTopJournal API
         There will be a new self. attrs with parsed information from API. You can check all of them with self.parsed_attr_names.
@@ -33,11 +34,6 @@ class JournalParser(object):
             USER_NAME = YOUR_USERNAME
         """
         self.JOURNAL_URLS: JournalUrlsConfig = JournalUrlsConfig()
-        
-        ## Get all the URLS from UrlsConfig dataclass and delete the login url: ##
-        URLS_TO_GET_DATA: list[str] = [url for url in JournalUrlsConfig()]
-        URLS_TO_GET_DATA.remove(self.JOURNAL_URLS.LOGIN_URL)
-        self.parsed_attr_names: list = [variable_name for _, variable_name in URLS_TO_GET_DATA]
 
         with Session() as session:
             access_token: str = self._login_in_journal_api(
@@ -45,20 +41,22 @@ class JournalParser(object):
                 login_json_data=login_json_data
             )
             request_headers: dict = get_headers_for_requests(token=access_token) 
-            ## Set new self attrs for each in list url: ##
-            for url, var_name in URLS_TO_GET_DATA:
-                setattr(
-                    self,
-                    var_name,
-                    self._get_request_to_journal(
-                        url=url,
-                        headers=request_headers,
-                        session=session
-                    )
-                )
-        
-        return None
+            
+            shedule: list[dict] = self._get_request_to_journal(
+                url=self.JOURNAL_URLS.SHEDULE_URL[0],
+                session=session,
+                headers=request_headers
+            )
+            leaderboard: list[dict] = self._get_request_to_journal(
+                url=self.JOURNAL_URLS.GROUP_LEADERBOAR_URL[0],
+                session=session,
+                headers=request_headers
+            )
+            
+            self.shedule_object: JournalShedule = JournalShedule(shedule=shedule)
+            self.leaderboard_object: JournalLeaderboard = JournalLeaderboard(leaderboard=leaderboard)
 
+        return None
 
     @staticmethod
     def check_response_status(response: Response) -> None:
@@ -74,7 +72,6 @@ class JournalParser(object):
             raise RequestException(f"Failed to login in the JournalApi. Status code: {response.status_code}")
 
         return None
-
 
     @request_logger
     def _get_request_to_journal(
@@ -100,7 +97,6 @@ class JournalParser(object):
         self.check_response_status(response=response)
         
         return response.json()
-
 
     @request_logger
     def _login_in_journal_api(
